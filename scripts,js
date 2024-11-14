@@ -1,0 +1,74 @@
+// Menu Toggle (for mobile view)
+const menuIcon = document.getElementById("menu-icon");
+const navbar = document.querySelector(".navbar");
+
+menuIcon.addEventListener("click", () => {
+  navbar.classList.toggle("active");
+});
+
+// Smooth Scrolling for navigation links
+const navLinks = document.querySelectorAll(".navbar a");
+
+navLinks.forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute("href").slice(1);
+    const targetElement = document.getElementById(targetId);
+
+    window.scrollTo({
+      top: targetElement.offsetTop - 70,  // Adjusting scroll position
+      behavior: "smooth"
+    });
+  });
+});
+
+// Text Animation for the home section
+const textAnimationSpan = document.querySelector(".text-animation span");
+const phrases = ["UI/UX Designer", "Creative Problem Solver", "Web Developer"];
+let currentPhrase = 0;
+let currentChar = 0;
+
+function typeAnimation() {
+  if (currentChar < phrases[currentPhrase].length) {
+    textAnimationSpan.textContent += phrases[currentPhrase].charAt(currentChar);
+    currentChar++;
+    setTimeout(typeAnimation, 100);
+  } else {
+    setTimeout(() => {
+      textAnimationSpan.textContent = "";
+      currentChar = 0;
+      currentPhrase = (currentPhrase + 1) % phrases.length;
+      typeAnimation();
+    }, 2000); // Wait before typing the next phrase
+  }
+}
+
+typeAnimation();  // Start the text animation
+
+// Active link highlighting in the navbar
+const sections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+  let currentSection = "";
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 100;
+    if (window.pageYOffset >= sectionTop) {
+      currentSection = section.getAttribute("id");
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove("active");
+    if (link.getAttribute("href").slice(1) === currentSection) {
+      link.classList.add("active");
+    }
+  });
+});
+
+// Contact form submission (if needed)
+const contactForm = document.querySelector("form");
+contactForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  alert("Message sent successfully!");
+  // You can implement further form submission functionality here, like sending to an email or database
+});
